@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoamWell - Viaje com propósito</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --sand: #F5F0E8;
+    --sand-dark: #E8DFD0;
+    --ink: #1C1A17;
+    --ink-soft: #4A4540;
+    --sage: #5C7A5E;
+    --sage-light: #E8F0E8;
+    --terracotta: #B85C3A;
+    --terracotta-light: #F5E8E3;
+    --gold: #C4932A;
+    --white: #FDFCFA;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(253,252,250,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--sand-dark);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--sage); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    background: var(--sand);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 80px 5% 60px;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: var(--sand-dark);
+    opacity: 0.5;
+  }
+  .hero-text { position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    border: 1px solid var(--sage);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+  .hero-title em { color: var(--terracotta); font-style: italic; }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    line-height: 1.75;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 2px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--ink-soft); transform: translateY(-1px); }
+  .btn-outline {
+    display: inline-block;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 14px 32px;
+    border-radius: 2px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-left: 1rem;
+    transition: background 0.2s;
+  }
+  .btn-outline:hover { background: var(--sand-dark); }
+  .hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-card-stack {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  .dest-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(28,26,23,0.12);
+  }
+  .dest-card-img {
+    height: 260px;
+    background: linear-gradient(135deg, #5C7A5E 0%, #3D5C3E 50%, #2A4028 100%);
+    display: flex; align-items: flex-end;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .dest-card-img::before {
+    content: 'LISBOA';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: rgba(255,255,255,0.08);
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+  }
+  .dest-badge {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--sage);
+    position: relative; z-index: 1;
+  }
+  .dest-card-body { padding: 1.25rem 1.5rem; }
+  .dest-card-body h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
+  .dest-card-body p { font-size: 0.85rem; color: var(--ink-soft); }
+  .dest-card-body .price {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--terracotta);
+    margin-top: 0.5rem;
+  }
+  .floating-tag {
+    position: absolute;
+    top: -20px; right: -20px;
+    background: var(--terracotta);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 12px 18px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(184,92,58,0.3);
+  }
+  .floating-tag strong { display: block; font-size: 1.2rem; }
+
+  /* SECTIONS COMMON */
+  section { padding: 100px 5%; }
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    max-width: 600px;
+  }
+  .section-sub {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 520px;
+    line-height: 1.75;
+    margin-bottom: 3rem;
+  }
+
+  /* SOBRE */
+  #sobre {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .sobre-pillars { display: flex; flex-direction: column; gap: 1.5rem; }
+  .pillar {
+    display: flex; gap: 1.25rem; align-items: flex-start;
+  }
+  .pillar-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: var(--sage-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .pillar-text h4 {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    color: var(--ink);
+  }
+  .pillar-text p { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.6; }
+
+  /* NOVIDADES */
+  #novidades { background: var(--sand); }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.2s;
+  }
+  .feature-card:hover { transform: translateY(-4px); }
+  .feature-icon {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  .feature-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .feature-card p { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.65; }
+  .feature-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  /* TRANSPORTE */
+  #transporte { background: var(--white); }
+  .transport-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-top: 3rem;
+  }
+  .transport-card {
+    border: 1px solid var(--sand-dark);
+    border-radius: 12px;
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .transport-card:hover {
+    border-color: var(--sage);
+    transform: translateY(-3px);
+  }
+  .transport-card .t-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .transport-card h3 {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    color: var(--ink);
+  }
+  .transport-card p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.55; }
+  .transport-card .avail {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sage);
+  }
+
+  /* PREÇOS */
+  #precos { background: var(--sand); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .pricing-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 2rem;
+    border: 1px solid var(--sand-dark);
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.featured {
+    background: var(--ink);
+    border-color: var(--ink);
+    transform: scale(1.04);
+  }
+  .pricing-card.featured:hover { transform: scale(1.04) translateY(-4px); }
+  .popular-badge {
+    position: absolute;
+    top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--terracotta);
+    color: var(--white);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .plan-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.5rem;
+  }
+  .pricing-card.featured .plan-name { color: rgba(255,255,255,0.6); }
+  .plan-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .pricing-card.featured .plan-price { color: var(--white); }
+  .plan-price span { font-size: 1rem; font-family: 'DM Sans', sans-serif; font-weight: 300; }
+  .plan-desc {
+    font-size: 0.825rem;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+  }
+  .pricing-card.featured .plan-desc { color: rgba(255,255,255,0.6); }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; }
+  .plan-features li {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .pricing-card.featured .plan-features li { color: rgba(255,255,255,0.8); }
+  .plan-features li::before { content: '✓'; color: var(--sage); font-weight: 600; }
+  .pricing-card.featured .plan-features li::before { color: #8FBF91; }
+  .btn-plan {
+    display: block; text-align: center;
+    background: var(--sand);
+    color: var(--ink);
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .btn-plan:hover { background: var(--sand-dark); }
+  .pricing-card.featured .btn-plan {
+    background: var(--white);
+    color: var(--ink);
+  }
+  .pricing-card.featured .btn-plan:hover { background: var(--sand); }
+
+  /* REVIEWS */
+  #reviews { background: var(--white); }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .review-card {
+    border: 1px solid var(--sand-dark);
+    border-radius: 12px;
+    padding: 1.75rem;
+    background: var(--white);
+  }
+  .review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .review-text {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 1.25rem;
+  }
+  .review-author { display: flex; align-items: center; gap: 0.75rem; }
+  .author-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: var(--sage-light);
+    color: var(--sage);
+    flex-shrink: 0;
+  }
+  .author-name { font-size: 0.875rem; font-weight: 500; color: var(--ink); }
+  .author-trip { font-size: 0.78rem; color: var(--ink-soft); }
+
+  /* CONTATO */
+  #contato {
+    background: var(--ink);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  #contato .section-label { color: rgba(255,255,255,0.4); }
+  #contato .section-title { color: var(--white); }
+  #contato .section-sub { color: rgba(255,255,255,0.6); }
+  .contact-items { display: flex; flex-direction: column; gap: 1.25rem; }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    transition: border-color 0.2s;
+  }
+  .contact-item:hover { border-color: rgba(255,255,255,0.25); }
+  .contact-icon {
+    font-size: 1.3rem;
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-info h4 { font-weight: 500; font-size: 0.875rem; color: var(--white); margin-bottom: 2px; }
+  .contact-info p { font-size: 0.825rem; color: rgba(255,255,255,0.55); }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-form input,
+  .contact-form textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 12px 16px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: rgba(255,255,255,0.35); }
+  .btn-send {
+    background: var(--terracotta);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 14px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.15s;
+    align-self: flex-start;
+  }
+  .btn-send:hover { background: #A44D2E; transform: translateY(-1px); }
+
+  /* FOOTER */
+  footer {
+    background: #141210;
+    color: rgba(255,255,255,0.4);
+    padding: 2rem 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.82rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+  }
+  .footer-logo span { color: #8FBF91; }
+  footer p { color: rgba(255,255,255,0.3); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    #hero, #sobre, #contato { grid-template-columns: 1fr; gap: 3rem; }
+    #hero { padding-top: 100px; }
+    .hero-visual { order: -1; }
+    .features-grid, .pricing-grid, .reviews-grid { grid-template-columns: 1fr; }
+    .transport-grid { grid-template-columns: 1fr 1fr; }
+    .pricing-card.featured { transform: none; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Roam<span>Well</span></a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#novidades">Novidades</a></li>
+    <li><a href="#transporte">Transporte</a></li>
+    <li><a href="#precos">Preços</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-text">
+    <span class="hero-tag">Viagens conscientes</span>
+    <h1 class="hero-title">Viaje bem,<br><em>viva melhor.</em></h1>
+    <p class="hero-sub">A RoamWell reimagina o jeito de viajar com rotas personalizadas, transporte sustentável e experiências que ficam na memória.</p>
+    <a href="#precos" class="btn-primary">Ver planos</a>
+    <a href="#sobre" class="btn-outline">Saiba mais</a>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-stack">
+      <div class="floating-tag">
+        <strong>+2.400</strong>
+        viajantes satisfeitos
+      </div>
+      <div class="dest-card">
+        <div class="dest-card-img">
+          <span class="dest-badge">🌿 Destino em alta</span>
+        </div>
+        <div class="dest-card-body">
+          <h3>Lisboa, Portugal</h3>
+          <p>7 dias · Cultura & Gastronomia</p>
+          <p class="price">a partir de R$ 4.890</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div>
+    <p class="section-label">Quem somos</p>
+    <h2 class="section-title">Uma nova forma de encarar o mundo</h2>
+    <p class="section-sub">A RoamWell nasceu da crença de que viajar vai além do destino. Somos uma plataforma de viagens focada em bem-estar, sustentabilidade e conexão genuína com cada lugar.</p>
+    <a href="#novidades" class="btn-primary">O que há de novo</a>
+  </div>
+  <div class="sobre-pillars">
+    <div class="pillar">
+      <div class="pillar-icon">🌍</div>
+      <div class="pillar-text">
+        <h4>Sustentabilidade real</h4>
+        <p>Compensamos as emissões de cada viagem e priorizamos parceiros com práticas responsáveis.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">🎯</div>
+      <div class="pillar-text">
+        <h4>Rotas personalizadas</h4>
+        <p>Cada itinerário é construído com base no seu estilo de vida, ritmo e preferências pessoais.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">🤝</div>
+      <div class="pillar-text">
+        <h4>Suporte humano 24h</h4>
+        <p>Você nunca está sozinho, nossa equipe está disponível em qualquer fuso horário.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">✨</div>
+      <div class="pillar-text">
+        <h4>Sem surpresas</h4>
+        <p>Preços transparentes, contratos simples e tudo incluído no que você vê.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOVIDADES -->
+<section id="novidades">
+  <p class="section-label">O que há de novo</p>
+  <h2 class="section-title">O que a RoamWell traz de diferente</h2>
+  <p class="section-sub">Recursos pensados para tornar cada viagem mais fluida, memorável e intencional.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🧭</div>
+      <h3>Planner inteligente</h3>
+      <p>Monte seu roteiro com sugestões baseadas no seu perfil de viajante. Horários, distâncias e tempo de descanso calculados automaticamente.</p>
+      <span class="feature-tag">Novidade 2025</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌱</div>
+      <h3>Viagem carbono neutro</h3>
+      <p>Calculamos o impacto ambiental da sua viagem e investimos em projetos de reflorestamento como compensação automática.</p>
+      <span class="feature-tag">Exclusivo RoamWell</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📍</div>
+      <h3>Experiências locais curadas</h3>
+      <p>Acesso a experiências únicas selecionadas por moradores locais, longe do turismo de massa.</p>
+      <span class="feature-tag">Mais de 80 cidades</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3>Comunidade de viajantes</h3>
+      <p>Conecte-se com pessoas que compartilham do mesmo jeito de viajar. Troque dicas e forme grupos para destinos específicos.</p>
+      <span class="feature-tag">Rede ativa</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Flexibilidade total</h3>
+      <p>Mudou de planos? Reagende sem taxa de cancelamento até 72h antes da viagem em todos os planos.</p>
+      <span class="feature-tag">Política nova</span>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <h3>Seguro viagem integrado</h3>
+      <p>Cobertura médica, cancelamentos e extravio de bagagem incluídos nos planos, sem contratação separada.</p>
+      <span class="feature-tag">Incluído no plano</span>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSPORTE -->
+<section id="transporte">
+  <p class="section-label">Como você viaja</p>
+  <h2 class="section-title">Meios de transporte disponíveis</h2>
+  <p class="section-sub">Escolha o modal que combina com a sua viagem. Integramos as melhores opções em cada destino.</p>
+  <div class="transport-grid">
+    <div class="transport-card">
+      <div class="t-icon">✈️</div>
+      <h3>Voos</h3>
+      <p>Passagens aéreas nacionais e internacionais com as melhores tarifas do mercado, incluindo emissão de milhas.</p>
+      <span class="avail">Nacional & Internacional</span>
+    </div>
+    <div class="transport-card">
+      <div class="t-icon">🚆</div>
+      <h3>Trens</h3>
+      <p>Rotas de trem de alta velocidade na Europa e trens panorâmicos para experiências cênicas únicas.</p>
+      <span class="avail">Europa & Ásia</span>
+    </div>
+    <div class="transport-card">
+      <div class="t-icon">🚌</div>
+      <h3>Ônibus premium</h3>
+      <p>Linhas rodoviárias de longa distância com conforto executivo e pontualidade garantida.</p>
+      <span class="avail">América do Sul</span>
+    </div>
+    <div class="transport-card">
+      <div class="t-icon">🚗</div>
+      <h3>Transfer & carro</h3>
+      <p>Transfers privados nos aeroportos e locação de carros com seguro incluído em mais de 40 países.</p>
+      <span class="avail">Mais de 40 países</span>
+    </div>
+    <div class="transport-card">
+      <div class="t-icon">⛴️</div>
+      <h3>Cruzeiros & ferries</h3>
+      <p>Travessias marítimas e cruzeiros fluviais, ideais para rotas no Mediterrâneo e no Amazonas.</p>
+      <span class="avail">Destinos selecionados</span>
+    </div>
+    <div class="transport-card">
+      <div class="t-icon">🛵</div>
+      <h3>Mobilidade urbana</h3>
+      <p>Bicicletas, patinetes e metrô integrados nos roteiros para locomoção sustentável no destino.</p>
+      <span class="avail">Cidades parceiras</span>
+    </div>
+    <div class="transport-card">
+      <div class="t-icon">🚁</div>
+      <h3>Helicóptero</h3>
+      <p>Translados de helicóptero para destinos remotos ou para vistas panorâmicas especiais.</p>
+      <span class="avail">Planos Premium</span>
+    </div>
+    <div class="transport-card">
+      <div class="t-icon">🌿</div>
+      <h3>Eco-transporte</h3>
+      <p>Opções 100% elétricas ou de baixo impacto para quem prioriza sustentabilidade em cada etapa.</p>
+      <span class="avail">Compromisso verde</span>
+    </div>
+  </div>
+</section>
+
+<!-- PREÇOS -->
+<section id="precos">
+  <p class="section-label">Planos</p>
+  <h2 class="section-title">Preços sem letra miúda</h2>
+  <p class="section-sub">Escolha o plano que combina com o seu jeito de viajar. Sem taxas escondidas, sem surpresas.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <p class="plan-name">Essencial</p>
+      <p class="plan-price">R$ 199<span>/mês</span></p>
+      <p class="plan-desc">Ideal para viajantes ocasionais</p>
+      <ul class="plan-features">
+        <li>Até 2 roteiros por mês</li>
+        <li>Planner básico</li>
+        <li>Suporte por chat</li>
+        <li>Seguro viagem básico</li>
+        <li>Cancelamento gratuito 72h</li>
+      </ul>
+      <a href="#contato" class="btn-plan">Começar agora</a>
+    </div>
+    <div class="pricing-card featured">
+      <span class="popular-badge">Mais popular</span>
+      <p class="plan-name">Explorador</p>
+      <p class="plan-price">R$ 449<span>/mês</span></p>
+      <p class="plan-desc">Para quem viaja com frequência</p>
+      <ul class="plan-features">
+        <li>Roteiros ilimitados</li>
+        <li>Planner inteligente completo</li>
+        <li>Suporte 24h por voz</li>
+        <li>Seguro viagem premium</li>
+        <li>Experiências locais curadas</li>
+        <li>Carbono neutro incluso</li>
+      </ul>
+      <a href="#contato" class="btn-plan">Escolher Explorador</a>
+    </div>
+    <div class="pricing-card">
+      <p class="plan-name">Premium</p>
+      <p class="plan-price">R$ 890<span>/mês</span></p>
+      <p class="plan-desc">Experiência sem compromissos</p>
+      <ul class="plan-features">
+        <li>Tudo do Explorador</li>
+        <li>Concierge pessoal dedicado</li>
+        <li>Acesso a helicóptero e transfer VIP</li>
+        <li>Lounges aeroportuários</li>
+        <li>Experiências exclusivas</li>
+        <li>Família inclusa (até 4 pessoas)</li>
+      </ul>
+      <a href="#contato" class="btn-plan">Falar com consultor</a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <p class="section-label">Depoimentos</p>
+  <h2 class="section-title">O que nossos viajantes dizem</h2>
+  <p class="section-sub">Mais de 2.400 pessoas já exploraram o mundo com a RoamWell.</p>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"O planner da RoamWell transformou completamente como eu planejo viagens. Cada detalhe foi pensado, e o suporte durante a viagem foi impecável. Nunca me senti tão segura viajando sozinha."</p>
+      <div class="review-author">
+        <div class="author-avatar">CM</div>
+        <div>
+          <p class="author-name">Carla Monteiro</p>
+          <p class="author-trip">Lisboa + Sintra · Plano Explorador</p>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Viajei para o Japão com o plano Explorador e fui surpreendido o tempo todo. As experiências locais curadas são o diferencial, lugares que eu jamais descobriria sozinho."</p>
+      <div class="review-author">
+        <div class="author-avatar">RS</div>
+        <div>
+          <p class="author-name">Rafael Santos</p>
+          <p class="author-trip">Tóquio + Kyoto · Plano Explorador</p>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Usamos o plano Premium para a lua de mel e foi além de qualquer expectativa. O concierge nos acompanhou em cada etapa. Recomendo sem hesitar para qualquer viagem especial."</p>
+      <div class="review-author">
+        <div class="author-avatar">AP</div>
+        <div>
+          <p class="author-name">Ana & Pedro Lima</p>
+          <p class="author-trip">Grécia & Turquia · Plano Premium</p>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Sou do tipo que odeia planejar. A RoamWell resolveu isso. Em minutos tinha um roteiro completo para Marrocos, com sugestões que casavam exatamente com meu estilo."</p>
+      <div class="review-author">
+        <div class="author-avatar">LC</div>
+        <div>
+          <p class="author-name">Lucas Costa</p>
+          <p class="author-trip">Marrakesh · Plano Essencial</p>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"O que me conquistou foi a transparência nos preços. Nada de taxas escondidas, o seguro já incluso e o cancelamento sem dor de cabeça. Finalmente uma empresa honesta no setor."</p>
+      <div class="review-author">
+        <div class="author-avatar">BF</div>
+        <div>
+          <p class="author-name">Beatriz Ferreira</p>
+          <p class="author-trip">Buenos Aires · Plano Essencial</p>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Fui com a família toda para a Costa Rica pelo plano Premium. Helicóptero, tours exclusivos, jantares incríveis. Meus filhos ainda falam da viagem. Vale cada centavo."</p>
+      <div class="review-author">
+        <div class="author-avatar">MR</div>
+        <div>
+          <p class="author-name">Marcos Ribeiro</p>
+          <p class="author-trip">Costa Rica · Plano Premium</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div>
+    <p class="section-label">Fale conosco</p>
+    <h2 class="section-title">Vamos planejar sua próxima aventura</h2>
+    <p class="section-sub">Nossa equipe está pronta para responder qualquer dúvida e ajudar você a encontrar o plano ideal.</p>
+    <div class="contact-items">
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div class="contact-info">
+          <h4>E-mail</h4>
+          <p>ola@roamwell.com.br</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div class="contact-info">
+          <h4>WhatsApp</h4>
+          <p>+55 (31) 99900-0000</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-info">
+          <h4>Atendimento</h4>
+          <p>Segunda a sexta, 8h–20h · Sábado, 9h–14h</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="contact-form">
+      <input type="text" placeholder="Seu nome">
+      <input type="email" placeholder="Seu e-mail">
+      <input type="text" placeholder="Destino de interesse (opcional)">
+      <textarea rows="4" placeholder="Sua mensagem"></textarea>
+      <button class="btn-send">Enviar mensagem →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Roam<span>Well</span></span>
+  <p>© 2026 RoamWell · Viaje com propósito.</p>
+  <p>Belo Horizonte, Brasil</p>
+</footer>
+
+</body>
+</html>
